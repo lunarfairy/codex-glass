@@ -16,8 +16,8 @@ Get-Process CodexGlass -ErrorAction SilentlyContinue | Where-Object {
 New-Item -ItemType Directory -Path $installDirectory -Force | Out-Null
 Copy-Item -Path (Join-Path $sourceDirectory '*') -Destination $installDirectory -Recurse -Force
 
-& $installedExecutable --register-startup
-if ($LASTEXITCODE -ne 0) {
+$registration = Start-Process -FilePath $installedExecutable -ArgumentList '--register-startup' -Wait -PassThru
+if ($registration.ExitCode -ne 0) {
     throw '无法注册自动启动。'
 }
 
