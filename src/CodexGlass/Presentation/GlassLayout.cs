@@ -2,7 +2,7 @@ namespace CodexGlass.Presentation;
 
 public static class GlassLayout
 {
-    public const double Width = 176;
-    public const double CollapsedHeight = 52;
-    public const double ExpandedHeight = 82;
+    public const double Width = 184;
+    public const double CollapsedHeight = 56;
+    public const double ExpandedHeight = 88;
 }
