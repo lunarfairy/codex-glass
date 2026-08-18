@@ -6,25 +6,24 @@ namespace CodexGlass.Tests;
 public sealed class MainViewModelTests
 {
     [Fact]
-    public void Apply_FormatsPercentagesAndResetCountdowns()
+    public void Apply_FormatsWeeklyValueResetCopyAndProgress()
     {
         var now = new DateTimeOffset(2026, 8, 18, 10, 0, 0, TimeSpan.Zero);
         var viewModel = new MainViewModel();
         var snapshot = new QuotaSnapshot(
-            new QuotaWindow(72, now.AddHours(2).AddMinutes(14)),
+            new QuotaWindow(72, now.AddHours(2)),
             new QuotaWindow(38, now.AddDays(2).AddHours(3).AddMinutes(4)));
 
         viewModel.Apply(snapshot, now);
 
-        Assert.Equal("72%", viewModel.FiveHourPercent);
         Assert.Equal("38%", viewModel.WeeklyPercent);
-        Assert.Equal("2小时 14分", viewModel.FiveHourReset);
-        Assert.Equal("2天 3小时 4分", viewModel.WeeklyReset);
+        Assert.Equal("2天 3小时 4分后重置", viewModel.WeeklyReset);
+        Assert.Equal(0.38, viewModel.WeeklyProgress);
         Assert.False(viewModel.IsStale);
     }
 
     [Fact]
-    public void MarkStale_PreservesLastKnownPercentages()
+    public void MarkStale_PreservesLastKnownWeeklyValue()
     {
         var viewModel = new MainViewModel();
         viewModel.Apply(
@@ -33,8 +32,8 @@ public sealed class MainViewModelTests
 
         viewModel.MarkStale();
 
-        Assert.Equal("80%", viewModel.FiveHourPercent);
         Assert.Equal("55%", viewModel.WeeklyPercent);
+        Assert.Equal(0.55, viewModel.WeeklyProgress);
         Assert.True(viewModel.IsStale);
     }
 }

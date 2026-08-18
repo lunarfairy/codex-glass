@@ -5,10 +5,10 @@ namespace CodexGlass.Tests;
 public sealed class GlassLayoutTests
 {
     [Fact]
-    public void UsesCompactCollapsedAndExpandedDimensions()
+    public void UsesCompactWeeklyCapsuleDimensions()
     {
-        Assert.Equal(280, GlassLayout.Width);
-        Assert.Equal(54, GlassLayout.CollapsedHeight);
-        Assert.Equal(92, GlassLayout.ExpandedHeight);
+        Assert.Equal(176, GlassLayout.Width);
+        Assert.Equal(52, GlassLayout.CollapsedHeight);
+        Assert.Equal(82, GlassLayout.ExpandedHeight);
     }
 }
