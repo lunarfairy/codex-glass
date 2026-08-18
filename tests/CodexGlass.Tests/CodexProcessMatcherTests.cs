@@ -12,9 +12,16 @@ public sealed class CodexProcessMatcherTests
         Assert.True(CodexProcessMatcher.IsCodexDesktop("ChatGPT", path, "Codex"));
     }
 
+    [Fact]
+    public void MatchesCurrentCodexDesktopProcess()
+    {
+        const string path = @"C:\Program Files\WindowsApps\OpenAI.Codex_1.0\app\resources\codex.exe";
+
+        Assert.True(CodexProcessMatcher.IsCodexDesktop("codex", path, ""));
+    }
+
     [Theory]
     [InlineData("ChatGPT", @"C:\Program Files\WindowsApps\OpenAI.ChatGPT_1.0\app\ChatGPT.exe", "ChatGPT")]
-    [InlineData("codex", @"C:\Program Files\WindowsApps\OpenAI.Codex_1.0\app\resources\codex.exe", "")]
     [InlineData("ChatGPT", null, "ChatGPT")]
     public void RejectsProcessesThatAreNotTheCodexDesktopShell(string name, string? path, string title)
     {

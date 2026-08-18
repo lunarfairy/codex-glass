@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media.Animation;
+using System.Windows.Media;
 using CodexGlass.Configuration;
 using CodexGlass.Presentation;
 using CodexGlass.ViewModels;
@@ -30,14 +30,9 @@ public partial class MainWindow : Window
             return;
         }
 
-        var workArea = SystemParameters.WorkArea;
+        var workArea = GetWorkAreaInDeviceIndependentPixels();
         Left = workArea.Right - Width - 24;
         Top = workArea.Top + 24;
-    }
-
-    private void OnSourceInitialized(object? sender, EventArgs e)
-    {
-        GlassBackdrop.Apply(new WindowInteropHelper(this).Handle);
     }
 
     private void OnMouseEnter(object sender, MouseEventArgs e) => AnimateHeight(GlassLayout.ExpandedHeight);
@@ -60,12 +55,31 @@ public partial class MainWindow : Window
         }
 
         DragMove();
-        _settings.Save(new GlassSettings(Left, Top));
+        _settings.Save(_settings.Load() with { Left = Left, Top = Top });
     }
 
-    private static bool IsOnVirtualScreen(double left, double top) =>
-        left >= SystemParameters.VirtualScreenLeft - GlassLayout.Width &&
-        left <= SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth &&
-        top >= SystemParameters.VirtualScreenTop - GlassLayout.CollapsedHeight &&
-        top <= SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight;
+    private bool IsOnVirtualScreen(double left, double top)
+    {
+        var scale = VisualTreeHelper.GetDpi(this).DpiScaleX;
+        var virtualLeft = SystemParameters.VirtualScreenLeft / scale;
+        var virtualTop = SystemParameters.VirtualScreenTop / scale;
+        var virtualRight = (SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth) / scale;
+        var virtualBottom = (SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight) / scale;
+
+        return left >= virtualLeft - GlassLayout.Width &&
+               left + GlassLayout.Width <= virtualRight &&
+               top >= virtualTop - GlassLayout.CollapsedHeight &&
+               top + GlassLayout.CollapsedHeight <= virtualBottom;
+    }
+
+    private Rect GetWorkAreaInDeviceIndependentPixels()
+    {
+        var scale = VisualTreeHelper.GetDpi(this).DpiScaleX;
+        var workArea = SystemParameters.WorkArea;
+        return new Rect(
+            workArea.Left / scale,
+            workArea.Top / scale,
+            workArea.Width / scale,
+            workArea.Height / scale);
+    }
 }

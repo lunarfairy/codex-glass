@@ -15,4 +15,16 @@ public static class StartupRegistration
             ?? Registry.CurrentUser.CreateSubKey(RunKey, writable: true);
         key.SetValue(ValueName, BuildCommand(executablePath));
     }
+
+    public static bool IsEnabled()
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(RunKey, writable: false);
+        return key?.GetValue(ValueName) is not null;
+    }
+
+    public static void Disable()
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(RunKey, writable: true);
+        key?.DeleteValue(ValueName, throwOnMissingValue: false);
+    }
 }

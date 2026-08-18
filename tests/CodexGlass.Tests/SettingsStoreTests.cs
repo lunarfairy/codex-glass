@@ -33,4 +33,26 @@ public sealed class SettingsStoreTests
 
         Assert.Equal(GlassSettings.Default, new SettingsStore(path).Load());
     }
+
+    [Fact]
+    public void Load_EnablesOverlayForSettingsWrittenBeforeTheOverlaySwitch()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), $"CodexGlassTests-{Guid.NewGuid():N}");
+        var path = Path.Combine(directory, "settings.json");
+
+        try
+        {
+            Directory.CreateDirectory(directory);
+            File.WriteAllText(path, "{ \"Left\": 123.5, \"Top\": 48.25 }");
+
+            Assert.True(new SettingsStore(path).Load().IsOverlayEnabled);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+            {
+                Directory.Delete(directory, recursive: true);
+            }
+        }
+    }
 }

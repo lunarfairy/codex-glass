@@ -4,6 +4,7 @@ $programsDirectory = [IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'Progra
 $installDirectory = [IO.Path]::GetFullPath((Join-Path $programsDirectory 'CodexGlass'))
 $installedExecutable = Join-Path $installDirectory 'CodexGlass.exe'
 $settingsDirectory = [IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'CodexGlass'))
+$shortcutPath = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Codex Glass 控制台.lnk'
 
 function Remove-DirectoryWhenUnlocked([string] $path) {
     $deadline = [DateTime]::UtcNow.AddSeconds(10)
@@ -26,6 +27,7 @@ if (-not $installDirectory.StartsWith($programsDirectory + [IO.Path]::DirectoryS
 }
 
 Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -Name 'CodexGlass' -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath $shortcutPath -Force -ErrorAction SilentlyContinue
 
 $installedProcesses = @(Get-Process CodexGlass -ErrorAction SilentlyContinue | Where-Object {
     $_.Path -eq $installedExecutable

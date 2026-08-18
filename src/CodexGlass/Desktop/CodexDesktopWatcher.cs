@@ -22,7 +22,7 @@ public sealed class CodexDesktopWatcher
 
     private static IEnumerable<DesktopProcess> ReadProcesses()
     {
-        foreach (var process in Process.GetProcessesByName("ChatGPT"))
+        foreach (var process in Process.GetProcessesByName("ChatGPT").Concat(Process.GetProcessesByName("codex")))
         {
             using (process)
             {

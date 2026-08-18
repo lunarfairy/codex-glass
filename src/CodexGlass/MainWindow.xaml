@@ -16,35 +16,25 @@
         ShowInTaskbar="False"
         ShowActivated="False"
         FontFamily="Segoe UI Variable Text, Microsoft YaHei UI"
-        SourceInitialized="OnSourceInitialized"
         MouseEnter="OnMouseEnter"
         MouseLeave="OnMouseLeave"
         MouseLeftButtonDown="OnMouseLeftButtonDown">
     <Border CornerRadius="28"
-            BorderBrush="#78FFFFFF"
+            BorderBrush="#A8FFFFFF"
             BorderThickness="1"
-            ClipToBounds="True">
+            SnapsToDevicePixels="True">
         <Border.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#BFFDFEFF" Offset="0" />
-                <GradientStop Color="#9BEAF0F7" Offset="0.55" />
-                <GradientStop Color="#A6DDE6F0" Offset="1" />
+                <GradientStop Color="#66FFFFFF" Offset="0" />
+                <GradientStop Color="#48EDF3FA" Offset="0.55" />
+                <GradientStop Color="#5CD9E4F0" Offset="1" />
             </LinearGradientBrush>
         </Border.Background>
 
         <Grid>
-            <Border Height="24" VerticalAlignment="Top" IsHitTestVisible="False">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#8CFFFFFF" Offset="0" />
-                        <GradientStop Color="#00FFFFFF" Offset="1" />
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
-
             <Border Margin="1"
                     CornerRadius="27"
-                    BorderBrush="#52FFFFFF"
+                    BorderBrush="#75FFFFFF"
                     BorderThickness="1,1,0,0"
                     IsHitTestVisible="False" />
 

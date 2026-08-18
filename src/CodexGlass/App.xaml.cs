@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using CodexGlass.AppServer;
 using CodexGlass.Configuration;
+using CodexGlass.Control;
 using CodexGlass.Desktop;
 using CodexGlass.Quota;
 using CodexGlass.ViewModels;
@@ -13,7 +14,12 @@ namespace CodexGlass;
 public partial class App : Application
 {
     private Mutex? _mutex;
+    private SettingsStore? _settingsStore;
+    private GlassSettings _settings = GlassSettings.Default;
     private MainWindow? _window;
+    private ControlWindow? _controlWindow;
+    private ControlSignal? _controlSignal;
+    private CancellationTokenSource? _controlListenerCancellation;
     private MainViewModel? _viewModel;
     private CodexDesktopWatcher? _watcher;
     private DispatcherTimer? _timer;
@@ -35,6 +41,13 @@ public partial class App : Application
             return;
         }
 
+        var shouldOpenController = e.Args.Contains("--control", StringComparer.OrdinalIgnoreCase);
+        if (shouldOpenController && ControlSignal.TrySignalOpenController())
+        {
+            Shutdown();
+            return;
+        }
+
         _mutex = new Mutex(initiallyOwned: true, "Local\\CodexGlass.SingleInstance", out var isFirstInstance);
         if (!isFirstInstance)
         {
@@ -46,14 +59,23 @@ public partial class App : Application
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "CodexGlass",
             "settings.json");
+        _settingsStore = new SettingsStore(settingsPath);
+        _settings = _settingsStore.Load();
         _viewModel = new MainViewModel();
         _watcher = new CodexDesktopWatcher();
-        _window = new MainWindow(_viewModel, new SettingsStore(settingsPath));
+        _window = new MainWindow(_viewModel, _settingsStore);
+        _controlSignal = new ControlSignal();
+        _controlListenerCancellation = new CancellationTokenSource();
+        StartControlListener(_controlListenerCancellation.Token);
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
         _timer.Tick += async (_, _) => await CheckAsync();
         _timer.Start();
         Dispatcher.BeginInvoke(async () => await CheckAsync());
+        if (shouldOpenController)
+        {
+            Dispatcher.BeginInvoke(ShowControlWindow);
+        }
     }
 
     private async Task CheckAsync()
@@ -66,6 +88,13 @@ public partial class App : Application
         _checking = true;
         try
         {
+            if (!_settings.IsOverlayEnabled)
+            {
+                _window.Hide();
+                await StopServerAsync();
+                return;
+            }
+
             if (!_watcher.IsRunning())
             {
                 _window.Hide();
@@ -121,9 +150,88 @@ public partial class App : Application
         _lastRefresh = DateTimeOffset.MinValue;
     }
 
+    private void StartControlListener(CancellationToken cancellationToken)
+    {
+        _ = Task.Run(() =>
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    if (_controlSignal?.Wait(TimeSpan.FromMilliseconds(250)) == true)
+                    {
+                        Dispatcher.BeginInvoke(ShowControlWindow);
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    return;
+                }
+            }
+        }, cancellationToken);
+    }
+
+    private void ShowControlWindow()
+    {
+        if (_controlWindow is null)
+        {
+            _controlWindow = new ControlWindow(_settings.IsOverlayEnabled, StartupRegistration.IsEnabled());
+            _controlWindow.OverlayEnabledChanged += SetOverlayEnabled;
+            _controlWindow.StartupEnabledChanged += SetStartupEnabled;
+            _controlWindow.Closed += (_, _) => _controlWindow = null;
+            _controlWindow.Show();
+            return;
+        }
+
+        _controlWindow.SetStates(_settings.IsOverlayEnabled, StartupRegistration.IsEnabled());
+        _controlWindow.Show();
+        _controlWindow.Activate();
+    }
+
+    private void SetOverlayEnabled(bool isEnabled)
+    {
+        _settings = (_settingsStore?.Load() ?? _settings) with { IsOverlayEnabled = isEnabled };
+        _settingsStore?.Save(_settings);
+        _controlWindow?.SetStatus(isEnabled ? "悬浮条已开启" : "悬浮条已关闭");
+
+        if (isEnabled)
+        {
+            _ = CheckAsync();
+        }
+        else
+        {
+            _window?.Hide();
+            _ = StopServerAsync();
+        }
+    }
+
+    private void SetStartupEnabled(bool isEnabled)
+    {
+        try
+        {
+            if (isEnabled)
+            {
+                StartupRegistration.Ensure(Environment.ProcessPath!);
+            }
+            else
+            {
+                StartupRegistration.Disable();
+            }
+
+            _controlWindow?.SetStatus(isEnabled ? "开机自启已开启" : "开机自启已关闭");
+        }
+        catch
+        {
+            _controlWindow?.SetStates(_settings.IsOverlayEnabled, StartupRegistration.IsEnabled());
+            _controlWindow?.SetStatus("无法修改开机自启设置");
+        }
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
         _timer?.Stop();
+        _controlListenerCancellation?.Cancel();
+        _controlSignal?.Dispose();
         if (_server is not null)
         {
             _server.DisposeAsync().AsTask().GetAwaiter().GetResult();
