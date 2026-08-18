@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F0420E92-71F1-4300-8F62-8574BA60B11D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodexGlass", "src\CodexGlass\CodexGlass.csproj", "{B8AFFCA2-140E-40EA-8E7B-1545DD59D09D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D1D53CBA-B83D-49F1-A1BC-0334085BF95C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodexGlass.Tests", "tests\CodexGlass.Tests\CodexGlass.Tests.csproj", "{3646D67D-93B2-4586-88BC-03D9BE1208E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8AFFCA2-140E-40EA-8E7B-1545DD59D09D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8AFFCA2-140E-40EA-8E7B-1545DD59D09D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8AFFCA2-140E-40EA-8E7B-1545DD59D09D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8AFFCA2-140E-40EA-8E7B-1545DD59D09D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3646D67D-93B2-4586-88BC-03D9BE1208E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3646D67D-93B2-4586-88BC-03D9BE1208E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3646D67D-93B2-4586-88BC-03D9BE1208E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3646D67D-93B2-4586-88BC-03D9BE1208E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B8AFFCA2-140E-40EA-8E7B-1545DD59D09D} = {F0420E92-71F1-4300-8F62-8574BA60B11D}
+		{3646D67D-93B2-4586-88BC-03D9BE1208E6} = {D1D53CBA-B83D-49F1-A1BC-0334085BF95C}
+	EndGlobalSection
+EndGlobal
