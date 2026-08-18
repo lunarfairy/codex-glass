@@ -2,12 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Codex Glass"
-        Width="176"
-        Height="52"
-        MinWidth="176"
-        MaxWidth="176"
-        MinHeight="52"
-        MaxHeight="82"
+        Width="184"
+        Height="56"
+        MinWidth="184"
+        MaxWidth="184"
+        MinHeight="56"
+        MaxHeight="88"
         WindowStyle="None"
         ResizeMode="NoResize"
         AllowsTransparency="True"
@@ -20,41 +20,41 @@
         MouseEnter="OnMouseEnter"
         MouseLeave="OnMouseLeave"
         MouseLeftButtonDown="OnMouseLeftButtonDown">
-    <Border CornerRadius="20"
-            BorderBrush="#3AFFFFFF"
+    <Border CornerRadius="28"
+            BorderBrush="#78FFFFFF"
             BorderThickness="1"
             ClipToBounds="True">
         <Border.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#D821242B" Offset="0" />
-                <GradientStop Color="#D317191E" Offset="0.55" />
-                <GradientStop Color="#DC111318" Offset="1" />
+                <GradientStop Color="#BFFDFEFF" Offset="0" />
+                <GradientStop Color="#9BEAF0F7" Offset="0.55" />
+                <GradientStop Color="#A6DDE6F0" Offset="1" />
             </LinearGradientBrush>
         </Border.Background>
 
         <Grid>
-            <Border Height="22" VerticalAlignment="Top" IsHitTestVisible="False">
+            <Border Height="24" VerticalAlignment="Top" IsHitTestVisible="False">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#1FFFFFFF" Offset="0" />
+                        <GradientStop Color="#8CFFFFFF" Offset="0" />
                         <GradientStop Color="#00FFFFFF" Offset="1" />
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
 
             <Border Margin="1"
-                    CornerRadius="19"
-                    BorderBrush="#1FFFFFFF"
+                    CornerRadius="27"
+                    BorderBrush="#52FFFFFF"
                     BorderThickness="1,1,0,0"
                     IsHitTestVisible="False" />
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="52" />
-                    <RowDefinition Height="30" />
+                    <RowDefinition Height="56" />
+                    <RowDefinition Height="32" />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="16,0">
+                <Grid Grid.Row="0" Margin="18,0">
                     <Grid Margin="0,0,0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -66,27 +66,27 @@
                                    Text="W E E K"
                                    FontSize="8.5"
                                    FontWeight="SemiBold"
-                                   Foreground="#72FFFFFF"
+                                   Foreground="#7C364152"
                                    VerticalAlignment="Center"
                                    Margin="0,2,0,0" />
 
                         <TextBlock Grid.Column="2"
                                    Text="{Binding WeeklyPercent}"
-                                   FontSize="26"
+                                   FontSize="28"
                                    FontWeight="SemiBold"
-                                   Foreground="#FFF7F8FA"
+                                   Foreground="#FF172033"
                                    VerticalAlignment="Center"
                                    Typography.NumeralStyle="Lining"
                                    Typography.NumeralAlignment="Tabular" />
                     </Grid>
 
                     <Border Height="2"
-                            Margin="0,0,0,7"
+                            Margin="0,0,0,8"
                             VerticalAlignment="Bottom"
-                            Background="#18FFFFFF"
+                            Background="#24334152"
                             CornerRadius="1"
                             ClipToBounds="True">
-                        <Border Background="#A8B9CAFF"
+                        <Border Background="#B45F8EFF"
                                 CornerRadius="1"
                                 RenderTransformOrigin="0,0.5">
                             <Border.RenderTransform>
@@ -96,14 +96,14 @@
                     </Border>
                 </Grid>
 
-                <Grid Grid.Row="1" Margin="16,0,16,7">
+                <Grid Grid.Row="1" Margin="18,0,18,8">
                     <Border Height="1"
                             VerticalAlignment="Top"
-                            Background="#18FFFFFF" />
+                            Background="#24334152" />
                     <TextBlock Text="{Binding WeeklyReset}"
                                FontSize="10.5"
                                FontWeight="Normal"
-                               Foreground="#A6FFFFFF"
+                               Foreground="#A63D4A5C"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Margin="0,3,0,0" />

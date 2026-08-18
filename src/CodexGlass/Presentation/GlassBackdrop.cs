@@ -10,7 +10,7 @@ public static class GlassBackdrop
         {
             AccentState = AccentState.EnableAcrylicBlurBehind,
             AccentFlags = 2,
-            GradientColor = unchecked((int)0xD9242220)
+            GradientColor = unchecked((int)0xA6F8F8F8)
         };
         var size = Marshal.SizeOf<AccentPolicy>();
         var pointer = Marshal.AllocHGlobal(size);
