@@ -1,0 +1,5 @@
+.worktrees/
+outputs/
+**/bin/
+**/obj/
+.vs/
