@@ -16,11 +16,11 @@ public sealed class AppServerProcess : IAsyncDisposable
         _stderr = process.StandardError.ReadToEndAsync();
     }
 
-    public static ProcessStartInfo CreateStartInfo(string? executablePath = null)
+    public static ProcessStartInfo CreateStartInfo()
     {
         var startInfo = new ProcessStartInfo
         {
-            FileName = executablePath ?? CodexCliLocator.ResolveExecutablePath(AppContext.BaseDirectory),
+            FileName = Environment.GetEnvironmentVariable("ComSpec") ?? "cmd.exe",
             UseShellExecute = false,
             CreateNoWindow = true,
             WindowStyle = ProcessWindowStyle.Hidden,
@@ -28,7 +28,10 @@ public sealed class AppServerProcess : IAsyncDisposable
             RedirectStandardOutput = true,
             RedirectStandardError = true
         };
-        startInfo.ArgumentList.Add("app-server");
+        startInfo.ArgumentList.Add("/d");
+        startInfo.ArgumentList.Add("/s");
+        startInfo.ArgumentList.Add("/c");
+        startInfo.ArgumentList.Add("codex app-server");
         return startInfo;
     }
 
