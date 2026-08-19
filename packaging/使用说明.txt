@@ -1,7 +1,8 @@
 Codex Glass
 ===========
 
-安装：双击“安装.cmd”。不需要管理员权限。
+安装前请先按 https://github.com/openai/codex#install 安装官方 Codex CLI。
+在终端执行 codex --version 确认 CLI 可用，再双击“安装.cmd”。不需要管理员权限。
 卸载：双击“卸载.cmd”。
 
 使用方式：
@@ -11,7 +12,7 @@ Codex Glass
 - 按住悬浮条可拖动，位置会自动记住。
 - Codex 关闭后悬浮条会隐藏；下次打开 Codex 时自动出现。
 - 应用随 Windows 在后台启动，不会出现在任务栏。
-- 安装包已内置 Codex CLI，不需要配置环境变量或单独安装命令行工具。
+- 安装包不会下载或内置 Codex CLI，安装器会检查已安装的官方 CLI。
 
 隐私：
 - 只读取 Codex 本机官方额度接口。

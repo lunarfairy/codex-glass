@@ -1,9 +1,0 @@
-Codex Glass release package: third-party notices
-
-Codex CLI
-Copyright 2025 OpenAI
-Source: https://github.com/openai/codex
-License: Apache License, Version 2.0
-
-The bundled Codex CLI is unmodified. A complete copy of the Apache-2.0
-license is included in APACHE-2.0.txt.
