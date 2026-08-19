@@ -2,12 +2,17 @@ $ErrorActionPreference = 'Stop'
 
 $sourceDirectory = Join-Path $PSScriptRoot 'app'
 $sourceExecutable = Join-Path $sourceDirectory 'CodexGlass.exe'
+$sourceCli = Join-Path $sourceDirectory 'tools\codex.exe'
 $installDirectory = Join-Path $env:LOCALAPPDATA 'Programs\CodexGlass'
 $installedExecutable = Join-Path $installDirectory 'CodexGlass.exe'
-$shortcutPath = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Codex Glass 控制台.lnk'
+$shortcutPath = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Codex Glass.lnk'
 
 if (-not (Test-Path -LiteralPath $sourceExecutable -PathType Leaf)) {
-    throw '安装包不完整：找不到 CodexGlass.exe。'
+    throw 'The installation package is incomplete: CodexGlass.exe is missing.'
+}
+
+if (-not (Test-Path -LiteralPath $sourceCli -PathType Leaf)) {
+    throw 'The installation package is incomplete: bundled codex.exe is missing.'
 }
 
 Get-Process CodexGlass -ErrorAction SilentlyContinue | Where-Object {
@@ -17,9 +22,9 @@ Get-Process CodexGlass -ErrorAction SilentlyContinue | Where-Object {
 New-Item -ItemType Directory -Path $installDirectory -Force | Out-Null
 Copy-Item -Path (Join-Path $sourceDirectory '*') -Destination $installDirectory -Recurse -Force
 
-$registration = Start-Process -FilePath $installedExecutable -ArgumentList '--register-startup' -Wait -PassThru
+$registration = Start-Process -FilePath $installedExecutable -ArgumentList @('--register-startup') -Wait -PassThru
 if ($registration.ExitCode -ne 0) {
-    throw '无法注册自动启动。'
+    throw 'Could not register Windows startup.'
 }
 
 $shell = New-Object -ComObject WScript.Shell
@@ -27,8 +32,8 @@ $shortcut = $shell.CreateShortcut($shortcutPath)
 $shortcut.TargetPath = $installedExecutable
 $shortcut.Arguments = '--control'
 $shortcut.WorkingDirectory = $installDirectory
-$shortcut.Description = '打开 Codex Glass 控制台'
+$shortcut.Description = 'Open Codex Glass controls'
 $shortcut.Save()
 
 Start-Process -FilePath $installedExecutable
-Write-Host 'Codex Glass 已安装，并会随 Windows 在后台启动。' -ForegroundColor Green
+Write-Host 'Codex Glass is installed and will start with Windows.' -ForegroundColor Green

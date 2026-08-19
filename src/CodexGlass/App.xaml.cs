@@ -28,6 +28,7 @@ public partial class App : Application
     private DateTimeOffset _lastRefresh = DateTimeOffset.MinValue;
     private DateTimeOffset _nextRetry = DateTimeOffset.MinValue;
     private bool _checking;
+    private string _quotaStatus = "正在读取 Codex 额度";
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -124,10 +125,20 @@ public partial class App : Application
                 _snapshot = await _server.ReadQuotaAsync(CancellationToken.None);
                 _lastRefresh = now;
                 _viewModel.Apply(_snapshot, now);
+                _quotaStatus = "额度已更新";
             }
             catch
             {
-                _viewModel.MarkStale();
+                if (_snapshot is null)
+                {
+                    _viewModel.MarkUnavailable();
+                }
+                else
+                {
+                    _viewModel.MarkStale();
+                }
+
+                _quotaStatus = "无法读取额度：请打开 Codex 桌面端并确认已登录";
                 _nextRetry = now.AddSeconds(15);
                 await StopServerAsync();
             }
@@ -179,11 +190,13 @@ public partial class App : Application
             _controlWindow.OverlayEnabledChanged += SetOverlayEnabled;
             _controlWindow.StartupEnabledChanged += SetStartupEnabled;
             _controlWindow.Closed += (_, _) => _controlWindow = null;
+            _controlWindow.SetStatus(_quotaStatus);
             _controlWindow.Show();
             return;
         }
 
         _controlWindow.SetStates(_settings.IsOverlayEnabled, StartupRegistration.IsEnabled());
+        _controlWindow.SetStatus(_quotaStatus);
         _controlWindow.Show();
         _controlWindow.Activate();
     }

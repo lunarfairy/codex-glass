@@ -34,6 +34,15 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public void MarkStale() => IsStale = true;
 
+    public void MarkUnavailable()
+    {
+        IsStale = true;
+        if (WeeklyPercent == "—")
+        {
+            WeeklyReset = "请先登录 Codex";
+        }
+    }
+
     private void Set<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value))

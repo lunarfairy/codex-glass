@@ -36,4 +36,16 @@ public sealed class MainViewModelTests
         Assert.Equal(0.55, viewModel.WeeklyProgress);
         Assert.True(viewModel.IsStale);
     }
+
+    [Fact]
+    public void MarkUnavailable_ExplainsHowToRecoverWhenNoQuotaWasLoaded()
+    {
+        var viewModel = new MainViewModel();
+
+        viewModel.MarkUnavailable();
+
+        Assert.Equal("—", viewModel.WeeklyPercent);
+        Assert.Equal("请先登录 Codex", viewModel.WeeklyReset);
+        Assert.True(viewModel.IsStale);
+    }
 }

@@ -14,13 +14,13 @@
 - 默认仅显示本周额度；鼠标移入后显示本周重置倒计时。
 - 仅在 Codex 桌面端运行时显示。
 - 桌面“Codex Glass 控制台”可即时开关悬浮条和 Windows 开机自启。
-- 读取本机 Codex app-server 的公开额度响应；不读取、不保存聊天内容、提示词、源代码或访问令牌。
+- 安装包内置官方 Codex CLI，从已登录的 Codex 本机账户读取额度响应；不读取、不保存聊天内容、提示词、源代码或访问令牌。
 
 ## 安装
 
 1. 在 [Releases](../../releases) 下载最新的 `CodexGlass-v*-windows-x64.zip`。
-2. 解压后双击 `安装.cmd`。
-3. 桌面会出现 **Codex Glass 控制台**：双击它即可调整悬浮条与开机自启。
+2. 确认已登录 Codex 桌面端，再解压并双击 `安装.cmd`。不需要管理员权限，也不需要配置环境变量或单独安装 Codex CLI。
+3. 桌面会出现 **Codex Glass**：双击它即可打开控制台，调整悬浮条与开机自启。
 
 卸载时，在同一目录双击 `卸载.cmd`。
 
@@ -30,15 +30,17 @@
 
 ```powershell
 dotnet test CodexGlass.sln --configuration Release
-dotnet publish src\CodexGlass\CodexGlass.csproj --configuration Release --runtime win-x64 --self-contained true --output outputs\CodexGlass
+./packaging/Build-Release.ps1 -CodexCliPath 'C:\\path\\to\\codex.exe' -Version '1.0.1'
 ```
 
-发布输出目录中的 `Install.ps1` 负责安装应用、注册开机自启并创建桌面控制台图标。
+发布脚本会将官方 Windows x64 Codex CLI 置于安装包的 `app/tools` 中。安装器负责安装应用、注册开机自启并创建桌面控制台图标。
 
 ## 隐私
 
-Codex Glass 只请求本机 Codex 进程提供的额度信息。它不会建立网络监听端口，不会将信息上传到第三方，也不会代理 Codex 请求。
+Codex Glass 只请求本机 Codex app-server 提供的额度信息。它不会建立网络监听端口，不会将信息上传到第三方，也不会代理 Codex 请求。
 
 ## 许可证
 
 本项目采用 [MIT License](LICENSE) 开源。
+
+发布包中包含官方 Codex CLI（Apache-2.0），其归属与完整许可证见发行包中的 `THIRD_PARTY_NOTICES.txt` 和 `APACHE-2.0.txt`。
