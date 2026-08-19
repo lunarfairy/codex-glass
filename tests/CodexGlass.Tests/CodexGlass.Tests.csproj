@@ -24,4 +24,10 @@
     <ProjectReference Include="..\..\src\CodexGlass\CodexGlass.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\packaging\Install.ps1"
+          Link="packaging\Install.ps1"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

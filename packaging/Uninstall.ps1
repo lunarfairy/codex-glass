@@ -5,6 +5,8 @@ $installDirectory = [IO.Path]::GetFullPath((Join-Path $programsDirectory 'CodexG
 $installedExecutable = Join-Path $installDirectory 'CodexGlass.exe'
 $settingsDirectory = [IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'CodexGlass'))
 $shortcutPath = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Codex Glass.lnk'
+$legacyShortcutName = 'Codex Glass ' + [char]0x63A7 + [char]0x5236 + [char]0x53F0 + '.lnk'
+$legacyShortcutPath = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) $legacyShortcutName
 
 function Remove-DirectoryWhenUnlocked([string] $path) {
     $deadline = [DateTime]::UtcNow.AddSeconds(10)
@@ -28,6 +30,7 @@ if (-not $installDirectory.StartsWith($programsDirectory + [IO.Path]::DirectoryS
 
 Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -Name 'CodexGlass' -ErrorAction SilentlyContinue
 Remove-Item -LiteralPath $shortcutPath -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath $legacyShortcutPath -Force -ErrorAction SilentlyContinue
 
 $installedProcesses = @(Get-Process CodexGlass -ErrorAction SilentlyContinue | Where-Object {
     $_.Path -eq $installedExecutable
