@@ -19,6 +19,22 @@ $shortcutPath = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Co
 $legacyShortcutName = 'Codex Glass ' + [char]0x63A7 + [char]0x5236 + [char]0x53F0 + '.lnk'
 $legacyShortcutPath = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) $legacyShortcutName
 
+function Remove-DirectoryWhenUnlocked([string] $path) {
+    $deadline = [DateTime]::UtcNow.AddSeconds(10)
+    while (Test-Path -LiteralPath $path) {
+        try {
+            Remove-Item -LiteralPath $path -Recurse -Force -ErrorAction Stop
+        }
+        catch [UnauthorizedAccessException] {
+            if ([DateTime]::UtcNow -ge $deadline) {
+                throw
+            }
+
+            Start-Sleep -Milliseconds 100
+        }
+    }
+}
+
 if (-not (Test-Path -LiteralPath $sourceExecutable -PathType Leaf)) {
     throw 'The installation package is incomplete: CodexGlass.exe is missing.'
 }
@@ -32,7 +48,7 @@ if ($installedProcesses.Count -gt 0) {
 }
 
 if (Test-Path -LiteralPath $installedToolsDirectory) {
-    Remove-Item -LiteralPath $installedToolsDirectory -Recurse -Force
+    Remove-DirectoryWhenUnlocked $installedToolsDirectory
 }
 
 New-Item -ItemType Directory -Path $installDirectory -Force | Out-Null
