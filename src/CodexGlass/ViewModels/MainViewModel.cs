@@ -6,6 +6,7 @@ namespace CodexGlass.ViewModels;
 
 public sealed class MainViewModel : INotifyPropertyChanged
 {
+    private IReadOnlyList<bool> _fiveHourSegments = Enumerable.Repeat(false, 10).ToArray();
     private string _weeklyPercent = "—";
     private string _weeklyReset = "—";
     private double _weeklyProgress;
@@ -13,6 +14,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    public IReadOnlyList<bool> FiveHourSegments { get => _fiveHourSegments; private set => Set(ref _fiveHourSegments, value); }
     public string WeeklyPercent { get => _weeklyPercent; private set => Set(ref _weeklyPercent, value); }
     public string WeeklyReset { get => _weeklyReset; private set => Set(ref _weeklyReset, value); }
     public double WeeklyProgress { get => _weeklyProgress; private set => Set(ref _weeklyProgress, value); }
@@ -20,6 +22,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public void Apply(QuotaSnapshot snapshot, DateTimeOffset now)
     {
+        var filledFiveHourSegments = Math.Clamp(
+            (int)Math.Round(snapshot.FiveHour.RemainingPercent / 10d, MidpointRounding.AwayFromZero),
+            0,
+            10);
+        FiveHourSegments = Enumerable.Range(0, 10)
+            .Select(index => index < filledFiveHourSegments)
+            .ToArray();
         WeeklyPercent = $"{snapshot.Weekly.RemainingPercent}%";
         WeeklyProgress = snapshot.Weekly.RemainingPercent / 100d;
         var countdown = CountdownFormatter.Format(snapshot.Weekly.ResetsAt, now);
