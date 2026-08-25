@@ -5,6 +5,23 @@ namespace CodexGlass.Tests;
 
 public sealed class MainViewModelTests
 {
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(38, 4)]
+    [InlineData(100, 10)]
+    public void Apply_MapsFiveHourRemainingQuotaToTenSegments(int remainingPercent, int filledSegments)
+    {
+        var viewModel = new MainViewModel();
+        var snapshot = new QuotaSnapshot(
+            new QuotaWindow(remainingPercent, null),
+            new QuotaWindow(50, null));
+
+        viewModel.Apply(snapshot, DateTimeOffset.UtcNow);
+
+        Assert.Equal(10, viewModel.FiveHourSegments.Count);
+        Assert.Equal(filledSegments, viewModel.FiveHourSegments.Count(segment => segment));
+    }
+
     [Fact]
     public void Apply_FormatsWeeklyValueResetCopyAndProgress()
     {
