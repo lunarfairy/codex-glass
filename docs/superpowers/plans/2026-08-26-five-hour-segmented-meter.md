@@ -16,7 +16,7 @@
 - Modify: `tests/CodexGlass.Tests/MainViewModelTests.cs`
 - Modify: `src/CodexGlass/ViewModels/MainViewModel.cs`
 
-- [ ] **Step 1: Write failing mapping tests**
+- [x] **Step 1: Write failing mapping tests**
 
 Add this theory to `MainViewModelTests`:
 
@@ -39,13 +39,13 @@ public void Apply_MapsFiveHourRemainingQuotaToTenSegments(int remainingPercent, 
 }
 ```
 
-- [ ] **Step 2: Run the focused test and confirm it fails**
+- [x] **Step 2: Run the focused test and confirm it fails**
 
 Run: `dotnet test CodexGlass.sln --configuration Release --no-restore --filter FullyQualifiedName~MainViewModelTests`
 
 Expected: compilation failure because `FiveHourSegments` does not exist.
 
-- [ ] **Step 3: Implement the minimal view-model state**
+- [x] **Step 3: Implement the minimal view-model state**
 
 Add this property and backing field to `MainViewModel`:
 
@@ -64,13 +64,13 @@ var fiveHourFilledSegments = Math.Clamp(
 FiveHourSegments = Enumerable.Range(0, 10).Select(index => index < fiveHourFilledSegments).ToArray();
 ```
 
-- [ ] **Step 4: Run the focused test and confirm it passes**
+- [x] **Step 4: Run the focused test and confirm it passes**
 
 Run: `dotnet test CodexGlass.sln --configuration Release --no-restore --filter FullyQualifiedName~MainViewModelTests`
 
 Expected: all view-model tests pass.
 
-- [ ] **Step 5: Commit the data mapping**
+- [x] **Step 5: Commit the data mapping**
 
 ```powershell
 git add tests/CodexGlass.Tests/MainViewModelTests.cs src/CodexGlass/ViewModels/MainViewModel.cs
@@ -82,7 +82,7 @@ git commit -m "feat: map five-hour quota to segments"
 **Files:**
 - Modify: `src/CodexGlass/MainWindow.xaml`
 
-- [ ] **Step 1: Add the five-hour ItemsControl**
+- [x] **Step 1: Add the five-hour ItemsControl**
 
 Inside the collapsed `Grid` that currently contains the weekly blue `Border`, add an `ItemsControl` above that border:
 
@@ -98,9 +98,10 @@ Inside the collapsed `Grid` that currently contains the weekly blue `Border`, ad
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
         <DataTemplate>
-            <Border Margin="0,0,2,0" CornerRadius="1.5" Background="#24334152">
+            <Border Margin="0,0,2,0" CornerRadius="1.5">
                 <Border.Style>
                     <Style TargetType="Border">
+                        <Setter Property="Background" Value="#24334152" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding}" Value="True">
                                 <Setter Property="Background" Value="#B34FBF7A" />
@@ -116,13 +117,13 @@ Inside the collapsed `Grid` that currently contains the weekly blue `Border`, ad
 
 Keep the blue weekly `Border` below it and move its bottom margin to `6` so both bars fit in the existing 56-pixel collapsed region.
 
-- [ ] **Step 2: Build the WPF project**
+- [x] **Step 2: Build the WPF project**
 
 Run: `dotnet build src\CodexGlass\CodexGlass.csproj --configuration Release --no-restore`
 
 Expected: build succeeds without XAML errors.
 
-- [ ] **Step 3: Run all tests and inspect the running overlay**
+- [x] **Step 3: Run all tests and inspect the running overlay**
 
 Run: `dotnet test CodexGlass.sln --configuration Release --no-restore`
 
