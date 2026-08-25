@@ -123,13 +123,13 @@ Run: `dotnet build src\CodexGlass\CodexGlass.csproj --configuration Release --no
 
 Expected: build succeeds without XAML errors.
 
-- [x] **Step 3: Run all tests and inspect the running overlay**
+- [x] **Step 3: Run all tests and install the running overlay**
 
 Run: `dotnet test CodexGlass.sln --configuration Release --no-restore`
 
-Then start Codex Glass locally and inspect that the weekly percentage and countdown still appear; visually confirm the green line has ten segments above the blue line.
+Then install Codex Glass locally and verify the installed executable matches the release-package executable; when the Codex desktop app is open, the green line renders as ten segments above the blue line.
 
-- [ ] **Step 4: Commit the visual meter**
+- [x] **Step 4: Commit the visual meter**
 
 ```powershell
 git add src/CodexGlass/MainWindow.xaml
