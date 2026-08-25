@@ -87,7 +87,7 @@
 
                     <ItemsControl ItemsSource="{Binding FiveHourSegments}"
                                   Height="3"
-                                  Margin="0,8,0,0"
+                                  Margin="0,5,0,0"
                                   VerticalAlignment="Top"
                                   IsHitTestVisible="False">
                         <ItemsControl.ItemsPanel>
