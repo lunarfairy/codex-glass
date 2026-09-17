@@ -1,5 +1,7 @@
 # Codex Glass
 
+**简体中文** | [English](README.en.md)
+
 一个常驻桌面的 Windows 浅色玻璃悬浮条：顶部绿色十段条显示五小时剩余额度，底部蓝色条和数字显示本周剩余额度，鼠标移入显示本周重置倒计时。
 
 **[下载最新版安装包](https://github.com/lunarfairy/codex-glass/releases/latest)** · [反馈问题](https://github.com/lunarfairy/codex-glass/issues)
