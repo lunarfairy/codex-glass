@@ -54,7 +54,7 @@ if (Test-Path -LiteralPath $installedToolsDirectory) {
 New-Item -ItemType Directory -Path $installDirectory -Force | Out-Null
 Copy-Item -Path (Join-Path $sourceDirectory '*') -Destination $installDirectory -Recurse -Force
 
-$registration = Start-Process -FilePath $installedExecutable -ArgumentList @('--register-startup') -Wait -PassThru
+$registration = Start-Process -FilePath $installedExecutable -ArgumentList @('--register-startup') -WindowStyle Hidden -Wait -PassThru
 if ($registration.ExitCode -ne 0) {
     throw 'Could not register Windows startup.'
 }
@@ -68,5 +68,5 @@ $shortcut.Description = 'Open Codex Glass controls'
 $shortcut.Save()
 Remove-Item -LiteralPath $legacyShortcutPath -Force -ErrorAction SilentlyContinue
 
-Start-Process -FilePath $installedExecutable
+Start-Process -FilePath $installedExecutable -ArgumentList @('--control')
 Write-Host 'Codex Glass is installed and will start with Windows.' -ForegroundColor Green

@@ -13,7 +13,7 @@ public sealed class AppServerConnection(TextReader input, TextWriter output)
             id = 0,
             @params = new
             {
-                clientInfo = new { name = "codex-glass", title = "Codex Glass", version = "1.0.2" }
+                clientInfo = new { name = "codex-glass", title = "Codex Glass", version = "1.0.3" }
             }
         }, cancellationToken);
         await ReadResponseAsync(0, cancellationToken);

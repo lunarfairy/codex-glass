@@ -19,6 +19,13 @@ if (Test-Path -LiteralPath $releaseDirectory) {
 }
 
 dotnet publish $projectPath --configuration Release --runtime win-x64 --self-contained true --output $appDirectory
+if ($LASTEXITCODE -ne 0) {
+    throw 'Publish failed. No release archive was created.'
+}
+
+foreach ($file in @('README.md', 'LICENSE')) {
+    Copy-Item -LiteralPath (Join-Path $repositoryRoot $file) -Destination $releaseDirectory
+}
 
 foreach ($file in @('Install.ps1', 'Uninstall.ps1')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination $releaseDirectory
