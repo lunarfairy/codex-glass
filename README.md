@@ -2,11 +2,14 @@
 
 **简体中文** | [English](README.en.md)
 
-一个常驻桌面的 Windows 浅色玻璃悬浮条：顶部绿色十段条显示五小时剩余额度，底部蓝色条和数字显示本周剩余额度，鼠标移入显示本周重置倒计时。
+一个支持 Windows 和 macOS 的桌面玻璃悬浮条：顶部绿色十段条显示五小时剩余额度，底部蓝色条和数字显示本周剩余额度，鼠标移入显示本周重置倒计时。
+
+**macOS 用户：**原生 Swift / AppKit 版本支持 macOS 13 及以上，提供背景不透明度调节、五小时额度显示开关和登录自启。请先查看 [macOS 安装与使用说明](macos/README.md)，下方的安装、卸载和常见问题主要面向 Windows。
 
 **[下载最新版安装包](https://github.com/lunarfairy/codex-glass/releases/latest)** · [反馈问题](https://github.com/lunarfairy/codex-glass/issues)
 
 ![Windows](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078D4?logo=windows&logoColor=white)
+![macOS](https://img.shields.io/badge/platform-macOS%2013%2B-000000?logo=apple&logoColor=white)
 ![.NET](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -29,7 +32,7 @@
 - 双击桌面“Codex Glass”可打开控制面板，即时开关悬浮条和 Windows 开机自启。
 - 使用用户自行安装的官方 Codex CLI，从已登录的 Codex 本机账户读取额度响应；不读取、不保存聊天内容、提示词、源代码或访问令牌。
 
-## 安装
+## Windows 安装
 
 适用于 Windows 10/11 x64。安装包自带 .NET 运行时，无需安装开发工具、编译代码或以管理员身份运行。
 
@@ -60,7 +63,9 @@
 
 ## 开发
 
-要求：Windows、.NET 8 SDK。
+macOS 构建、测试和打包见 [macOS 开发说明](macos/README.md)。GitHub Actions 分别检查 Windows、Apple Silicon 和 Intel Mac，并提供 Mac 安装包构建产物。
+
+Windows 要求：Windows、.NET 8 SDK。
 
 ```powershell
 dotnet test CodexGlass.sln --configuration Release
@@ -76,4 +81,3 @@ Codex Glass 只请求本机 Codex app-server 提供的额度信息。它不会�
 ## 许可证
 
 本项目采用 [MIT License](LICENSE) 开源。
-

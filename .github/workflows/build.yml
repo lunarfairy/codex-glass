@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: windows-latest
@@ -13,3 +16,26 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - run: dotnet test CodexGlass.sln --configuration Release
+
+  macos:
+    name: macOS (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-26
+            arch: arm64
+          - runner: macos-26-intel
+            arch: x64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./macos/test.sh
+      - run: ./macos/package.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CodexGlass-macos-${{ matrix.arch }}
+          path: |
+            macos/dist/CodexGlass-macos-${{ matrix.arch }}.zip
+            macos/dist/CodexGlass-macos-${{ matrix.arch }}.zip.sha256
+          if-no-files-found: error

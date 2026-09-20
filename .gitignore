@@ -4,3 +4,6 @@ work/
 **/bin/
 **/obj/
 .vs/
+macos/.build/
+macos/dist/
+.DS_Store

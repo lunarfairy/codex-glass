@@ -2,11 +2,14 @@
 
 [简体中文](README.md) | **English**
 
-A floating glass-style Windows widget for Codex usage limits. Ten green segments at the top show your remaining five-hour allowance; the blue bar and percentage show your remaining weekly allowance. Hover to see the weekly reset countdown.
+A floating glass-style widget for Codex usage limits on Windows and macOS. Ten green segments at the top show your remaining five-hour allowance; the blue bar and percentage show your remaining weekly allowance. Hover to see the weekly reset countdown.
+
+**macOS:** The native Swift / AppKit app supports macOS 13 and later, with adjustable background opacity, an optional five-hour percentage, and launch at login. Start with the [macOS installation and usage guide](macos/README.en.md). The installation, removal, and troubleshooting sections below primarily cover Windows.
 
 **[Download the latest release](https://github.com/lunarfairy/codex-glass/releases/latest)** · [Report an issue](https://github.com/lunarfairy/codex-glass/issues)
 
 ![Windows](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078D4?logo=windows&logoColor=white)
+![macOS](https://img.shields.io/badge/platform-macOS%2013%2B-000000?logo=apple&logoColor=white)
 ![.NET](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -31,7 +34,7 @@ The current app controls and countdown text are in Chinese. This page provides E
 - A desktop **Codex Glass** shortcut opens controls for the overlay and Windows startup.
 - Uses the official Codex CLI you install separately to read usage limits for its signed-in account. Codex Glass does not read or store chat content, prompts, source code, or access tokens.
 
-## Installation
+## Windows installation
 
 For Windows 10/11 x64. The ZIP includes the .NET runtime; no development tools, compilation, or administrator privileges are required to install Codex Glass.
 
@@ -62,7 +65,9 @@ If you still need help, [open an issue](https://github.com/lunarfairy/codex-glas
 
 ## Development
 
-Requirements: Windows and the .NET 8 SDK.
+See the [macOS development guide](macos/README.en.md) to build, test, and package the Mac app. GitHub Actions checks Windows, Apple Silicon, and Intel Mac builds separately and uploads the Mac installation archives.
+
+Windows requirements: Windows and the .NET 8 SDK.
 
 ```powershell
 dotnet test CodexGlass.sln --configuration Release
